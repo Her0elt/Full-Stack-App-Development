@@ -6,13 +6,10 @@ html, body {
 }
 .nav{
     font-size: 28px;
-    margin: -8px;
-    padding: 10px 10px;
     background-color: #333;
     position: fixed;
     width: 100%;
     top: 0;
-    
 }
 #menu-container {
    list-style-type: none;
