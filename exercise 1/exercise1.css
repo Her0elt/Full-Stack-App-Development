@@ -1,6 +1,6 @@
 .grid-container {
     display: grid;
-    grid-template-columns: 1fr 3fr;
+    grid-template-columns: 1fr;
     grid-template-rows: 1fr;
     grid-template-areas:
       'header header header header header header'
@@ -10,7 +10,7 @@
    
   }
 
-  @media(max-width: 640px){
+  @media(max-width: 1200px){
     .grid-container {
         grid-template-areas:
         'header'
@@ -25,11 +25,15 @@
     box-sizing: border-box;
     border-radius: 5px;
     font-size: 28px;
+    width: 100%;
+    margin: 0;
+   padding: 0;
 }
 #menu-container {
    list-style-type: none;
    margin: 0;
    padding: 0;
+   width: 100%;
    overflow: hidden;
    background-color: #333;
  }
@@ -92,10 +96,12 @@ div.item2 {
     max-height: 100%;
     height: auto; 
 }
+
 .item4{
     grid-area: footer;
     background-color: #333;
     width: 100%;
+    height: 100%;
     left: 0;
     bottom: 0;
     color: white;
