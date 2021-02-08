@@ -23,10 +23,10 @@ data class Adress(@Id
                   var author: Author?,
     )
 
-data class AdressDto(val id: Long, val street: String, val postCode:Int, val country: String)
+data class AdressList(val id: Long, val street: String, val postCode:Int, val country: String)
 
-fun Adress.toAdressDto(): AdressDto {
-    return AdressDto(
+fun Adress.toAdressList(): AdressList {
+    return AdressList(
             this.id,
             this.street,
             this.postCode,

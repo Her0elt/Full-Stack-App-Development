@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/api/book")
+@RequestMapping("/api/book/")
 class BookController(
         val bookRepository: BookRepository,
 ) {
@@ -38,10 +38,10 @@ class BookController(
                 bookRepository.findAll()
             }
         }
-        return ResponseEntity.ok(books.map{book -> book.toBookDto()})
+        return ResponseEntity.ok(books.map{book -> book.toBookList()})
     }
 
-    @GetMapping("/{bookName}")
+    @GetMapping("{bookName}/")
     fun getBookByName(@PathVariable bookName: String): ResponseEntity<*> {
         val book = bookRepository.findBookByName(bookName)
         return if (book != null) {
@@ -62,7 +62,7 @@ class BookController(
         }
     }
 
-    @PutMapping("/{bookName}")
+    @PutMapping("{bookName}/")
     fun updateBookByName(@PathVariable bookName: String, @Valid @RequestBody newBook: Book): ResponseEntity<*> {
         val book = bookRepository.findBookByName(bookName)
         return if (book != null) {
@@ -76,7 +76,7 @@ class BookController(
         }
     }
 
-    @DeleteMapping("/{bookName}")
+    @DeleteMapping("{bookName}/")
     fun deleteBookByName(@PathVariable bookName: String): ResponseEntity<*> {
         val book = bookRepository.findBookByName(bookName)
         return if (book != null) {

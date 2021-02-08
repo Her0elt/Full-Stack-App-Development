@@ -11,24 +11,24 @@ import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/api/author/{authorName}/book/")
 class AuthorBookController(
         val authorRepository: AuthorRepository,
         val bookRepository: BookRepository,
 ) {
 
 
-    @GetMapping("author/{authorName}/book/")
+    @GetMapping()
     fun getAuthorBookByName(@PathVariable authorName: String): ResponseEntity<*> {
         val book = bookRepository.findBooksByNameContains(authorName)
         return if (book != null) {
-            ResponseEntity.ok(book.map { book -> book.toBookDto()  })
+            ResponseEntity.ok(book.map { book -> book.toBookList()  })
         } else {
             ResponseEntity.status(HttpStatus.NOT_FOUND).body<Any>(ErrorResponse("Could not find the AuthorBook"))
         }
     }
 
-    @PostMapping("author/{authorName}/book/")
+    @PostMapping
     fun createNewAuthorBook(@PathVariable authorName: String,@Valid @RequestBody newBook: Book): ResponseEntity<*> {
         val author = authorRepository.findAuthorByName(authorName)
         val book = bookRepository.findBookByName(newBook.name)
@@ -40,7 +40,7 @@ class AuthorBookController(
         }
     }
 
-    @DeleteMapping("author/{authorName}/book/{bookName}/")
+    @DeleteMapping("{bookName}/")
     fun deleteAuthorByName(@PathVariable authorName: String, @PathVariable bookName: String): ResponseEntity<*> {
         val author = authorRepository.findAuthorByName(authorName)
         val book = bookRepository.findBookByName(bookName)

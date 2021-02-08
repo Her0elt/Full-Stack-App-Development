@@ -5,24 +5,22 @@ import com.NTNU.FullStack.Repositories.AdressRepository
 import com.NTNU.FullStack.Repositories.AuthorRepository
 import com.NTNU.FullStack.utils.ErrorResponse
 import com.NTNU.FullStack.utils.SuccessResponse
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/api/author")
+@RequestMapping("/api/author/")
 class AuthorController(
         val authorRepository: AuthorRepository,
         val adressRepository: AdressRepository,
 ) {
 
-    @GetMapping("/")
-    fun getAllLeagues(): List<AuthorDtoList> = authorRepository.findAll().map { author -> author.toAuthorDto() }
+    @GetMapping
+    fun getAllLeagues(): List<AuthorList> = authorRepository.findAll().map { author -> author.toAuthorList() }
 
-    @GetMapping("/{authorName}/")
+    @GetMapping("{authorName}/")
     fun getAuthorByName(@PathVariable authorName: String): ResponseEntity<*> {
         val author = authorRepository.findAuthorByName(authorName)
         return if (author != null) {
@@ -45,7 +43,7 @@ class AuthorController(
         }
     }
 
-    @PutMapping("/{authorName}")
+    @PutMapping("{authorName}/")
     fun updateAuthorByName(@PathVariable authorName: String, @Valid @RequestBody newAuthor: Author): ResponseEntity<*> {
         val author = authorRepository.findAuthorByName(authorName)
         return if (author != null) {
@@ -59,7 +57,7 @@ class AuthorController(
         }
     }
 
-    @DeleteMapping("/{authorName}")
+    @DeleteMapping("{authorName}")
     fun deleteAuthorByName(@PathVariable authorName: String): ResponseEntity<*> {
         val author = authorRepository.findAuthorByName(authorName)
         return if (author != null) {

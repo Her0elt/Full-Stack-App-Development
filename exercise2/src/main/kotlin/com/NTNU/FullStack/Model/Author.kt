@@ -32,21 +32,21 @@ data class Author(
             @JsonIgnore
             var books: MutableList<Book> = mutableListOf())
 
-data class AuthorDtoList(val id: Long, val name: String)
+data class AuthorList(val id: Long, val name: String)
 
-fun Author.toAuthorDto(): AuthorDtoList {
-    return AuthorDtoList(
+fun Author.toAuthorList(): AuthorList {
+    return AuthorList(
             this.id,
             this.name,
     )
 }
-data class AuthorResponse(val id: Long, val name: String, val adress: AdressDto, val books: List<BookDtoList> )
+data class AuthorResponse(val id: Long, val name: String, val adress: AdressList, val books: List<BookList> )
 
 fun Author.toAuthorResponse(): AuthorResponse {
     return AuthorResponse(
             this.id,
             this.name,
-            this.adress.toAdressDto(),
-            this.books.map { book -> book.toBookDto() },
+            this.adress.toAdressList(),
+            this.books.map { book -> book.toBookList() },
     )
 }
