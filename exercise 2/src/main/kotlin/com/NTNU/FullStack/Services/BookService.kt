@@ -1,7 +1,6 @@
 package com.NTNU.FullStack.Services
 
 import com.NTNU.FullStack.Controllers.AuthorController
-import com.NTNU.FullStack.Controllers.BookController
 import com.NTNU.FullStack.Model.Book
 import com.NTNU.FullStack.Model.toBookList
 import com.NTNU.FullStack.Model.toBookResponse
@@ -14,10 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestParam
-import javax.validation.Valid
 
 @Service
 class BookService {

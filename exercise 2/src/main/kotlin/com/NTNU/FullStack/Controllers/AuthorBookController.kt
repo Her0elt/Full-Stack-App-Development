@@ -2,10 +2,7 @@ package com.NTNU.FullStack.Controllers
 
 import com.NTNU.FullStack.Model.*
 import com.NTNU.FullStack.Services.AuthorBookService
-import com.NTNU.FullStack.utils.ErrorResponse
-import com.NTNU.FullStack.utils.SuccessResponse
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
