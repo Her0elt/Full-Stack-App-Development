@@ -23,7 +23,7 @@ class AuthorBookService {
     @Autowired
     private lateinit var  bookRepository: BookRepository
 
-    fun getAuthorBookByName(@PathVariable authorName: String): ResponseEntity<*> {
+    fun getAuthorBookByName(authorName: String): ResponseEntity<*> {
         val book = bookRepository.findBooksByNameContains(authorName)
         return if (book != null) {
             ResponseEntity.ok(book.map { book -> book.toBookList()  })
@@ -32,7 +32,7 @@ class AuthorBookService {
         }
     }
 
-    fun createNewAuthorBook(@PathVariable authorName: String,@Valid @RequestBody newBook: Book): ResponseEntity<*> {
+    fun createNewAuthorBook(authorName: String, newBook: Book): ResponseEntity<*> {
         val author = authorRepository.findAuthorByName(authorName)
         val book = bookRepository.findBookByName(newBook.name)
         return if (book != null && author != null) {
@@ -43,7 +43,7 @@ class AuthorBookService {
         }
     }
 
-    fun deleteAuthorByName(@PathVariable authorName: String, @PathVariable bookName: String): ResponseEntity<*> {
+    fun deleteAuthorByName(authorName: String, bookName: String): ResponseEntity<*> {
         val author = authorRepository.findAuthorByName(authorName)
         val book = bookRepository.findBookByName(bookName)
         return if (author != null && book != null) {

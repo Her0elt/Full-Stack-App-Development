@@ -18,8 +18,8 @@ class AuthorBookController{
     fun get(@PathVariable authorName: String): ResponseEntity<*> = authorBookService.getAuthorBookByName(authorName)
 
     @PostMapping
-    fun createNewAuthorBook(@PathVariable authorName: String,@Valid @RequestBody newBook: Book): ResponseEntity<*> = authorBookService.createNewAuthorBook(authorName,newBook)
+    fun create(@PathVariable authorName: String,@Valid @RequestBody newBook: Book): ResponseEntity<*> = authorBookService.createNewAuthorBook(authorName,newBook)
 
     @DeleteMapping("{bookName}/")
-    fun deleteAuthorByName(@PathVariable authorName: String, @PathVariable bookName: String): ResponseEntity<*> = authorBookService.deleteAuthorByName(authorName, bookName)
+    fun delete(@PathVariable authorName: String, @PathVariable bookName: String): ResponseEntity<*> = authorBookService.deleteAuthorByName(authorName, bookName)
 }
