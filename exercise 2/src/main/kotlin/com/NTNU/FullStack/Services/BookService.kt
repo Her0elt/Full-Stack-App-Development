@@ -43,7 +43,7 @@ class BookService {
 
     fun getBookByName(bookName: String): Book {
         bookRepository.findBookByName(bookName).run{
-            if(this == null)throw BookNotFoundExecption("Could not find the Author")
+            if(this == null)throw BookNotFoundExecption("Could not find the Book")
             return this
         }
     }
@@ -52,13 +52,14 @@ class BookService {
         bookRepository.findBookByName(newBook.name).run {
             if (this != null) return this
             val book = Book(0, newBook.name, newBook.authors)
+            bookRepository.save(book)
             return  book
         }
     }
 
     fun updateBookByName(bookName: String, newBook: Book): Book {
         bookRepository.findBookByName(bookName).run{
-            if(this == null)throw BookNotFoundExecption("Could not find the Author")
+            if(this == null)throw BookNotFoundExecption("Could not find the Book")
             val updatedBook = this.copy(
                     name = newBook.name ?: this.name,
                     authors = newBook.authors ?: this.authors,
@@ -69,7 +70,7 @@ class BookService {
 
     fun deleteBookByName(bookName: String): Boolean{
         bookRepository.findBookByName(bookName).run{
-            if(this == null)throw BookNotFoundExecption("Could not find the Author")
+            if(this == null)throw BookNotFoundExecption("Could not find the Book")
             bookRepository.delete(this)
         }
         return true

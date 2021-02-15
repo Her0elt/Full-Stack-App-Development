@@ -40,7 +40,7 @@ class AuthorService{
         }
     }
 
-    fun updateAuthorByName(authorName: String, @Valid @RequestBody newAuthor: Author): Author {
+    fun updateAuthorByName(authorName: String, newAuthor: Author): Author {
         authorRepository.findAuthorByName(authorName).run{
             if(this == null)throw AuthorNotFoundException("Could not find the Author")
             val updatedAuthor = this.copy(

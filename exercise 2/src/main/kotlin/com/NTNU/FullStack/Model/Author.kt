@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull
 data class Author(
             @Id
             @GeneratedValue(strategy = GenerationType.IDENTITY)
-            var id: Long = 0,
+            var id: Long,
             @NotNull
             var name:String,
             @NotNull

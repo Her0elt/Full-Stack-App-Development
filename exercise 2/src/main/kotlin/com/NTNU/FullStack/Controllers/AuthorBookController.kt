@@ -14,7 +14,7 @@ class AuthorBookController{
     @Autowired
     lateinit var authorBookService: AuthorBookService
 
-    @GetMapping()
+    @GetMapping
     fun get(@PathVariable authorName: String): ResponseEntity<*> = authorBookService.getAuthorBookByName(authorName)
 
     @PostMapping

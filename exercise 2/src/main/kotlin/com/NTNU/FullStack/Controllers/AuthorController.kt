@@ -13,7 +13,7 @@ import javax.validation.Valid
 
 
 @RestController
-@RequestMapping("/api/author/")
+@RequestMapping("/api/author")
 class AuthorController {
 
     @Autowired
@@ -22,35 +22,35 @@ class AuthorController {
     @GetMapping
     fun getAll(): List<AuthorList> = authorService.getAllAuthors();
 
-    @GetMapping("{authorName}/")
+    @GetMapping("/{authorName}")
     fun get(@PathVariable authorName: String): ResponseEntity<*> {
         try {
-            return ResponseEntity.ok(authorService.getAuthorByName(authorName))
+            return ResponseEntity.ok(authorService.getAuthorByName(authorName).toAuthorResponse())
         }catch (e: AuthorNotFoundException){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body<Any>(e.message?.let { ErrorResponse(it) })
         }
     }
 
-    @PostMapping
+    @PostMapping("/")
     fun create(@Valid @RequestBody newAuthor: Author): ResponseEntity<*> {
         try {
-            return ResponseEntity.ok(authorService.createNewAuthor(newAuthor))
+            return ResponseEntity.ok(authorService.createNewAuthor(newAuthor).toAuthorResponse())
         }catch (e: AuthorNotFoundException){
             throw ResponseStatusException(
                     HttpStatus.NOT_FOUND, "Author Not Found", e)
         }
     }
 
-    @PutMapping("{authorName}/")
+    @PutMapping("/{authorName}/")
     fun update(@PathVariable authorName: String, @Valid @RequestBody newAuthor: Author): ResponseEntity<*> {
         try {
-            return ResponseEntity.ok(authorService.updateAuthorByName(authorName,newAuthor))
+            return ResponseEntity.ok(authorService.updateAuthorByName(authorName,newAuthor).toAuthorResponse())
         }catch (e: AuthorNotFoundException){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body<Any>(e.message)
         }
     }
 
-    @DeleteMapping("{authorName}/")
+    @DeleteMapping("/{authorName}/")
     fun delete(@PathVariable authorName: String): ResponseEntity<*> {
         try {
             return ResponseEntity.ok(authorService.deleteAuthorByName(authorName))

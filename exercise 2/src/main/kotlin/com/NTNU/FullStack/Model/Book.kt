@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull
 data class Book(@Id
                   @GeneratedValue(strategy = GenerationType.IDENTITY)
                 @NotNull
-                  var id: Long = 0,
+                  var id: Long,
                 @NotNull
                 @Column(unique = true)
                   var name:String,

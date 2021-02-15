@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull
 @Table(name = "adress")
 data class Adress(@Id
                   @GeneratedValue(strategy = GenerationType.IDENTITY)
-                  var id: Long = 0,
+                  var id: Long,
                   @NotNull
                   var street:String,
                   @NotNull
