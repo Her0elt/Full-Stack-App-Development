@@ -1,16 +1,20 @@
 package com.NTNU.FullStack.Controllers
 
+import com.NTNU.FullStack.Exception.AuthorNotFoundException
 import com.NTNU.FullStack.Model.*
 import com.NTNU.FullStack.Services.AuthorService
+import com.NTNU.FullStack.utils.ErrorResponse
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.server.ResponseStatusException
 import javax.validation.Valid
+
 
 @RestController
 @RequestMapping("/api/author/")
 class AuthorController {
-
 
     @Autowired
     private lateinit var authorService: AuthorService
@@ -19,14 +23,40 @@ class AuthorController {
     fun getAll(): List<AuthorList> = authorService.getAllAuthors();
 
     @GetMapping("{authorName}/")
-    fun get(@PathVariable authorName: String): ResponseEntity<*> = authorService.getAuthorByName(authorName);
+    fun get(@PathVariable authorName: String): ResponseEntity<*> {
+        try {
+            return ResponseEntity.ok(authorService.getAuthorByName(authorName))
+        }catch (e: AuthorNotFoundException){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body<Any>(e.message?.let { ErrorResponse(it) })
+        }
+    }
 
     @PostMapping
-    fun create(@Valid @RequestBody newAuthor: Author): ResponseEntity<*> = authorService.createNewAuthor(newAuthor)
+    fun create(@Valid @RequestBody newAuthor: Author): ResponseEntity<*> {
+        try {
+            return ResponseEntity.ok(authorService.createNewAuthor(newAuthor))
+        }catch (e: AuthorNotFoundException){
+            throw ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Author Not Found", e)
+        }
+    }
 
     @PutMapping("{authorName}/")
-    fun update(@PathVariable authorName: String, @Valid @RequestBody newAuthor: Author): ResponseEntity<*> =authorService.updateAuthorByName(authorName,newAuthor )
+    fun update(@PathVariable authorName: String, @Valid @RequestBody newAuthor: Author): ResponseEntity<*> {
+        try {
+            return ResponseEntity.ok(authorService.updateAuthorByName(authorName,newAuthor))
+        }catch (e: AuthorNotFoundException){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body<Any>(e.message)
+        }
+    }
 
-    @DeleteMapping("{authorName}")
-    fun delete(@PathVariable authorName: String): ResponseEntity<*> =authorService.deleteAuthorByName(authorName);
+    @DeleteMapping("{authorName}/")
+    fun delete(@PathVariable authorName: String): ResponseEntity<*> {
+        try {
+            return ResponseEntity.ok(authorService.deleteAuthorByName(authorName))
+        }catch (e: AuthorNotFoundException){
+            throw ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Author Not Found", e)
+        }
+    }
 }

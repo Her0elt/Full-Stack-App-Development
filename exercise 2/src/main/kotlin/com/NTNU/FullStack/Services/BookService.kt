@@ -1,16 +1,12 @@
 package com.NTNU.FullStack.Services
 
 import com.NTNU.FullStack.Controllers.AuthorController
-import com.NTNU.FullStack.Model.Book
-import com.NTNU.FullStack.Model.toBookList
-import com.NTNU.FullStack.Model.toBookResponse
+import com.NTNU.FullStack.Exception.BookNotFoundExecption
+import com.NTNU.FullStack.Model.*
 import com.NTNU.FullStack.Repositories.BookRepository
-import com.NTNU.FullStack.utils.ErrorResponse
-import com.NTNU.FullStack.utils.SuccessResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
@@ -44,46 +40,40 @@ class BookService {
         return ResponseEntity.ok(books.map{ book -> book.toBookList()})
     }
 
-    fun getBookByName(bookName: String): ResponseEntity<*> {
-        val book = bookRepository.findBookByName(bookName)
-        return if (book != null) {
-            ResponseEntity.ok(book.toBookResponse())
-        } else {
-            ResponseEntity.status(HttpStatus.NOT_FOUND).body<Any>(ErrorResponse("Could not find the book"))
+
+    fun getBookByName(bookName: String): Book {
+        bookRepository.findBookByName(bookName).run{
+            if(this == null)throw BookNotFoundExecption("Could not find the Author")
+            return this
         }
     }
 
-    fun createNewBook(newBook: Book): ResponseEntity<*> {
-        val book = bookRepository.findBookByName(newBook.name)
-        return if (book != null) {
-            ResponseEntity.ok(book)
-        } else {
+    fun createNewBook(newBook: Book): Book {
+        bookRepository.findBookByName(newBook.name).run {
+            if (this != null) return this
             val book = Book(0, newBook.name, newBook.authors)
-            ResponseEntity.ok().body(bookRepository.save(book).toBookResponse())
+            return  book
         }
     }
 
-    fun updateBookByName(bookName: String, newBook: Book): ResponseEntity<*> {
-        val book = bookRepository.findBookByName(bookName)
-        return if (book != null) {
-            val updatedBook = book.copy(
-                    name = newBook.name ?: book.name,
-                    authors = newBook.authors ?: book.authors,
+    fun updateBookByName(bookName: String, newBook: Book): Book {
+        bookRepository.findBookByName(bookName).run{
+            if(this == null)throw BookNotFoundExecption("Could not find the Author")
+            val updatedBook = this.copy(
+                    name = newBook.name ?: this.name,
+                    authors = newBook.authors ?: this.authors,
             )
-            ResponseEntity.ok().body(bookRepository.save(updatedBook).toBookResponse())
-        } else {
-            ResponseEntity.status(HttpStatus.NOT_FOUND).body<Any>(ErrorResponse("Could not find the book to update"))
+            return bookRepository.save(updatedBook)
         }
     }
 
-    fun deleteBookByName(bookName: String): ResponseEntity<*> {
-        val book = bookRepository.findBookByName(bookName)
-        return if (book != null) {
-            bookRepository.delete(book)
-            ResponseEntity.ok<Any>(SuccessResponse("book successfully deleted"))
-        } else {
-            ResponseEntity.status(HttpStatus.NOT_FOUND).body<Any>(ErrorResponse("Could not find the book to delete"))
+    fun deleteBookByName(bookName: String): Boolean{
+        bookRepository.findBookByName(bookName).run{
+            if(this == null)throw BookNotFoundExecption("Could not find the Author")
+            bookRepository.delete(this)
         }
+        return true
+
     }
 
 }

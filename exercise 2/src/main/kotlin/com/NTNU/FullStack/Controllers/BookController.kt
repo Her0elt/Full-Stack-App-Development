@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
+
 @RestController
 @RequestMapping("/api/book/")
 class BookController {
@@ -15,17 +16,17 @@ class BookController {
     private lateinit var bookService: BookService
 
     @GetMapping
-    fun getAll(@RequestParam  name:String?, @RequestParam  authorName: String?): ResponseEntity<*> =bookService.getAllBooks(name, authorName)
+    fun getAll(@RequestParam name: String?, @RequestParam authorName: String?): ResponseEntity<*> =bookService.getAllBooks(name, authorName)
 
     @GetMapping("{bookName}/")
-    fun get(@PathVariable bookName: String): ResponseEntity<*> = bookService.getBookByName(bookName);
+    fun get(@PathVariable bookName: String): ResponseEntity<*> = ResponseEntity.ok(bookService.getBookByName(bookName))
 
     @PostMapping
-    fun create(@Valid @RequestBody newBook: Book): ResponseEntity<*> =bookService.createNewBook(newBook)
+    fun create(@Valid @RequestBody newBook: Book): ResponseEntity<*> = ResponseEntity.ok(bookService.createNewBook(newBook))
 
     @PutMapping("{bookName}/")
-    fun update(@PathVariable bookName: String, @Valid @RequestBody newBook: Book): ResponseEntity<*> = bookService.updateBookByName(bookName, newBook)
+    fun update(@PathVariable bookName: String, @Valid @RequestBody newBook: Book): ResponseEntity<*> = ResponseEntity.ok(bookService.updateBookByName(bookName, newBook))
 
     @DeleteMapping("{bookName}/")
-    fun delete(@PathVariable bookName: String): ResponseEntity<*> = bookService.deleteBookByName(bookName)
+    fun delete(@PathVariable bookName: String): ResponseEntity<*> = ResponseEntity.ok(bookService.deleteBookByName(bookName))
 }
