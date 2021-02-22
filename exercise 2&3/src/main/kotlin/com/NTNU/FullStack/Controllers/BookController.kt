@@ -18,7 +18,7 @@ class BookController {
     @GetMapping
     fun getAll(@RequestParam name: String?, @RequestParam authorName: String?): ResponseEntity<*> =bookService.getAllBooks(name, authorName)
 
-    @GetMapping("{bookName}/")
+    @GetMapping("{bookName}")
     fun get(@PathVariable bookName: String): ResponseEntity<*> = ResponseEntity.ok(bookService.getBookByName(bookName))
 
     @PostMapping

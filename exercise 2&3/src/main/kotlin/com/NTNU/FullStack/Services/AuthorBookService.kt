@@ -24,9 +24,9 @@ class AuthorBookService {
     private lateinit var  bookRepository: BookRepository
 
     fun getAuthorBookByName(authorName: String): ResponseEntity<*> {
-        val book = bookRepository.findBooksByNameContains(authorName)
-        return if (book != null) {
-            ResponseEntity.ok(book.map { book -> book.toBookList()  })
+        val books = bookRepository.findBooksByNameContains(authorName)
+        return if (books != null) {
+            ResponseEntity.ok(books.map { book -> book.toBookList()  })
         } else {
             ResponseEntity.status(HttpStatus.NOT_FOUND).body<Any>(ErrorResponse("Could not find the AuthorBook"))
         }

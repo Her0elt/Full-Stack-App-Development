@@ -20,7 +20,7 @@ class BookService {
     }
 
     fun getAllBooks( name:String?, authorName: String?): ResponseEntity<*> {
-        val books: List<Book> = when {
+        val books: List<Book>? = when {
             (name != null && authorName != null) -> {
                 logger.info("Search for book by name: $name and author: $authorName")
                 bookRepository.findByNameContainingAndAuthors_NameContains(name, authorName)
@@ -37,7 +37,10 @@ class BookService {
                 bookRepository.findAll()
             }
         }
-        return ResponseEntity.ok(books.map{ book -> book.toBookList()})
+        if (books != null) {
+            return ResponseEntity.ok(books.map{ book -> book.toBookList()})
+        }
+        throw BookNotFoundExecption("Could not find the Book")
     }
 
 
@@ -61,8 +64,8 @@ class BookService {
         bookRepository.findBookByName(bookName).run{
             if(this == null)throw BookNotFoundExecption("Could not find the Book")
             val updatedBook = this.copy(
-                    name = newBook.name ?: this.name,
-                    authors = newBook.authors ?: this.authors,
+                    name = newBook.name,
+                    authors = newBook.authors,
             )
             return bookRepository.save(updatedBook)
         }

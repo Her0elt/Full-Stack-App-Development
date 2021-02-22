@@ -19,6 +19,8 @@ class AuthorService{
     @Autowired
     private lateinit var adressRepository: AdressRepository
 
+
+
     fun getAllAuthors(): List<AuthorList> = authorRepository.findAll().map { author -> author.toAuthorList() }
 
 
@@ -33,9 +35,8 @@ class AuthorService{
         authorRepository.findAuthorByName(newAuthor.name).run {
             if (this != null) return this
             val adress =  Adress(0, newAuthor.adress.street, newAuthor.adress.postCode, newAuthor.adress.country, null)
-            adressRepository.save(adress)
             val author = Author(0, newAuthor.name, newAuthor.age, adress)
-            authorRepository.save(author)
+            authorRepository.saveAndFlush(author)
             return  author
         }
     }
@@ -44,8 +45,8 @@ class AuthorService{
         authorRepository.findAuthorByName(authorName).run{
             if(this == null)throw AuthorNotFoundException("Could not find the Author")
             val updatedAuthor = this.copy(
-                    name = newAuthor.name ?: this.name,
-                    age = newAuthor.age ?: this.age,
+                    name = newAuthor.name,
+                    age = newAuthor.age,
             )
             return authorRepository.save(updatedAuthor)
         }
