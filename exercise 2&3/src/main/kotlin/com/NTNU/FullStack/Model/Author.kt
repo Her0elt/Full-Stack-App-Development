@@ -40,12 +40,13 @@ fun Author.toAuthorList(): AuthorList {
             this.name,
     )
 }
-data class AuthorResponse(val id: Long, val name: String, val adress: AdressList, val books: List<BookList> )
+data class AuthorResponse(val id: Long, val name: String, val age:Int, val adress: AdressList, val books: List<BookList> )
 
 fun Author.toAuthorResponse(): AuthorResponse {
     return AuthorResponse(
             this.id,
             this.name,
+            this.age,
             this.adress.toAdressList(),
             this.books.map { book -> book.toBookList() },
     )

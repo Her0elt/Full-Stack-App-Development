@@ -65,7 +65,6 @@ class BookService {
             if(this == null)throw BookNotFoundExecption("Could not find the Book")
             val updatedBook = this.copy(
                     name = newBook.name,
-                    authors = newBook.authors,
             )
             return bookRepository.save(updatedBook)
         }

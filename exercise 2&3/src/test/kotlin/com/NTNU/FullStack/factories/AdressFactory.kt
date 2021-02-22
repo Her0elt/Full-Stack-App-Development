@@ -6,9 +6,6 @@ import org.springframework.beans.factory.FactoryBean
 import kotlin.random.Random
 
 class AdressFactory : FactoryBean<Adress> {
-    private val factoryId = 0
-    private val authorlId = 0
-
 
     override fun getObjectType(): Class<*> {
         return Adress::class.java

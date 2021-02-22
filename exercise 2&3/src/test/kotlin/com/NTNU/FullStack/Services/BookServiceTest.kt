@@ -3,24 +3,26 @@ package com.NTNU.FullStack.Services
 
 import com.NTNU.FullStack.Model.Book
 import com.NTNU.FullStack.Repositories.BookRepository
+import com.NTNU.FullStack.factories.AuthorFactory
 import com.NTNU.FullStack.factories.BookFactory
+import com.NTNU.FullStack.utils.getRandomString
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito
-import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
+@AutoConfigureMockMvc
 class BookServiceTest {
 
-    @Autowired
+    @InjectMocks
     private lateinit var bookService: BookService
 
-    @Autowired
+    @Mock
     private lateinit var bookRepo: BookRepository
 
     private lateinit var book: Book
@@ -29,7 +31,8 @@ class BookServiceTest {
     @BeforeEach
     fun setUp(){
         book = BookFactory().`object`
-        book = bookRepo.save(book)
+        Mockito.lenient().`when`(bookRepo.findBookByName(book.name)).thenReturn(book)
+        Mockito.lenient().`when`(bookRepo.findAll()).thenReturn(arrayListOf(BookFactory().`object`, BookFactory().`object`))
     }
     @Test
     fun `test book service get by name returns book`(){
@@ -37,24 +40,23 @@ class BookServiceTest {
     }
 
     @Test
-    fun `test book_service_create_book_creates_and_returns_book`(){
+    fun `test book service create book creates and returns book`(){
         val newBook = BookFactory().`object`
+        Mockito.lenient().`when`(bookRepo.save(newBook)).thenReturn(newBook)
         assert(this.bookService.createNewBook(newBook).name == newBook.name)
-        assert(this.bookRepo.findBookByName(newBook.name)!!.name == newBook.name)
     }
 
     @Test
-    fun test_book_service_update_author_updates_and_returns_book(){
+    fun `test book service update author updates and returns book`(){
+        val newName = getRandomString(8)
         val name = book.name
-        book.name = "tester"
-        assert(this.bookService.updateBookByName(name, book).name == book.name)
-        assert(this.bookRepo.findBookByName(book.name)!!.name == "tester")
+        book.name = newName
+        Mockito.lenient().`when`(bookRepo.save(book)).thenReturn(book)
+        assert(this.bookService.updateBookByName(name, book).name == newName)
     }
 
     @Test
-    fun test_book_service_delete_author_deletes_and_returns_true(){
+    fun `test book service delete author deletes and returns true`(){
         assert(this.bookService.deleteBookByName(book.name))
     }
-
-
 }
