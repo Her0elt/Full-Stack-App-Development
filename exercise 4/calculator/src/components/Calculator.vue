@@ -1,10 +1,8 @@
 <template>
   <div id="grid">
     <Paper id="container">
-      <div id="display-container">
         <div id="display">
         {{display}}
-        </div>
       </div>
       <div id = "edit">
         <CalculatorButton class="buttons" @clicked="() => current=''" sign='C' />
@@ -34,10 +32,10 @@
   </div>
 </template>
 
-<script>//lang = "ts"
+<script lang = "ts">//lang = "ts"
   import {ref, defineComponent, computed} from 'vue';
-  import CalculatorButton from './CalculatorButton'
-  import Paper from './Paper'
+  import CalculatorButton from '@/components/CalculatorButton.vue'
+  import Paper from '@/components/Paper.vue'
 export default defineComponent ({
   name: 'Calculator',
   components: {
@@ -51,20 +49,20 @@ export default defineComponent ({
     // reactive for non primitive values, so lager objects
     const signs = ["+","-","*","/"];
     const numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
-    const log = ref([]);
-    const sign = ref("");
-    const saved = ref("");
-    const current = ref("");
-    const seen = ref(true);
+    const log = ref<Array<String>>([]);
+    const sign = ref<String>("");
+    const saved = ref<String>("");
+    const current = ref<String>("");
+    const seen = ref<Boolean>(true);
     let desimale = false;
 
-    const addNumber =(nr) =>{
+    const addNumber =(nr:String) =>{
       if(display.value.length > 9) return;
       if(sign.value === "=")saved.value = "";
-      current.value += nr;
+      current.value = `${current.value}${nr}`;
     }
 
-    const setSign =(newSign) =>{
+    const setSign =(newSign: String) =>{
       desimale = false;
       if(sign.value !== "") evaluate();
       else saved.value = current.value;
@@ -84,7 +82,7 @@ export default defineComponent ({
       sign.value = "";
     }
     
-    const calculate = (nr1, nr2) => {
+    const calculate = (nr1:number, nr2:number) => {
         switch(sign.value) {
           case "+": return nr1 + nr2;
           case "-": return nr1 - nr2;
@@ -171,22 +169,19 @@ export default defineComponent ({
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
   }
-  #display-container{
+  #display{
     font-size: 42px;
-    text-align: right;
     margin: 0 auto;
     border:0.1em solid black;
     border-radius:0.12em;
     margin-bottom: 10px;
     width: 100%;
     height: 70px;
-    align-content: center;
-    justify-content: center;
-    display: flex;
-  }
-  #display{
-    margin:0 auto;
+    text-align: right;
     padding: 10px;
+      -moz-box-sizing:border-box;
+      -webkit-box-sizing:border-box;
+      box-sizing:border-box;
   }
   #action-container{
     padding: 5px 5px 5px 5px;

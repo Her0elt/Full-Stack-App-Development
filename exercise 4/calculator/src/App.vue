@@ -2,23 +2,25 @@
   <Calculator/>
 </template>
 
-<script>
-import Calculator from './components/Calculator.vue'
+<script lang="ts">
+import { defineComponent } from 'vue';
+import Calculator from '@/components/Calculator.vue';
 
-export default {
+export default defineComponent({
   name: 'App',
   components: {
     Calculator
   }
-}
+});
 </script>
 
 <style>
-  *{
-    margin: 0;
-    padding: 0;
-    align-content: center;
-    justify-content: center;
-    width: 100%;
-  }
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
 </style>

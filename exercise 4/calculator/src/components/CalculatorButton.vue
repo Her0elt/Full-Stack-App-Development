@@ -2,11 +2,17 @@
      <button @click="clicked">{{sign}}</button>
 </template>
 
-<script>
+<script lang="ts">
   import {defineComponent} from 'vue';
 export default defineComponent ( {
   name: 'CalculatorButton',
-    props: ['sign'],
+  emits:["clicked"],
+    props: {
+      sign:{
+        type: String,
+        required: true,
+      }
+    },
     setup(props, { emit }){
         const clicked = () =>{
             emit("clicked", props.sign)
