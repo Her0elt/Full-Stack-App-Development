@@ -30,7 +30,7 @@ export default defineComponent ( {
     display:inline-block;
     padding:0.35em 1.2em;
     border:0.1em solid #FFFFFF;
-    border-radius:0.12em;
+    border-radius:0.5em;
     box-sizing: border-box;
     text-decoration:none;
     font-weight:300;
@@ -39,6 +39,7 @@ export default defineComponent ( {
     transition: all 0.2s;
     width: 100%;
     height: 100%;
+    outline: none;
   }
   button::hover{
     background-color: #13171E;

@@ -1,6 +1,6 @@
 <template>
   <div id="grid">
-    <Paper id="container">
+    <Paper id="container" shadow>
         <div id="display">
         {{display}}
       </div>
@@ -23,7 +23,7 @@
     </Paper>
     <div id ="log-container">
       <button id="hide-btn" @click="seen=!seen">{{seen? "Hide" : "Show"}}</button>
-      <Paper id="log" v-if="seen">
+      <Paper id="log" v-if="seen" shadow>
         <div v-for="equation in log" :key="equation">
           {{equation}}
         </div>
@@ -121,7 +121,7 @@ export default defineComponent ({
   }
   #grid{
     margin: 0 auto;
-    margin-top: 50px;
+    margin-top: 25px;
     display: grid;
     width: 100%;
     grid-template-columns: 1fr 1fr;
@@ -143,7 +143,7 @@ export default defineComponent ({
   #log{
     font-size: 50px;
     margin-top: 20px;
-    height: 390px;
+    height: 370px;
     margin: 5px;
     overflow-y: auto;
     text-align: center;
@@ -161,6 +161,7 @@ export default defineComponent ({
     color: black;
     text-align:center;
     transition: all 0.2s;
+    outline: none;
   }
   #hide-btn::hover{
     background-color: #13171E;
@@ -168,6 +169,7 @@ export default defineComponent ({
   #edit{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+    width: 100%;
   }
   #display{
     font-size: 42px;
@@ -189,7 +191,7 @@ export default defineComponent ({
     grid-template-columns: 4fr 1fr;
     height: 100%;
     width: 100%;
-    grid-gap: 20px;
+    grid-gap: 5px;
 
   }
   #numbers{

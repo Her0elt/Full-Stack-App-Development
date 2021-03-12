@@ -1,5 +1,5 @@
 <template>
-     <div>
+     <div :class="[shadow ? 'shadow' : 'border']">
         <slot/>
      </div>
 </template>
@@ -8,6 +8,12 @@
   import {defineComponent} from 'vue';
 export default defineComponent ( {
   name: 'Paper',
+  props:{
+    shadow:{
+      type:Boolean,
+      required: false
+    }
+  }
 })
 </script>
 
@@ -15,6 +21,11 @@ export default defineComponent ( {
     div{
         padding: 25px;
         border-radius: 5px;
-        box-shadow: 5px 5px 5px 5px rgba(0,0,0,0.75);
+    }
+    .border{
+      border:0.1em solid black;
+    }
+    .shadow{
+      box-shadow: 5px 5px 5px 5px rgba(0,0,0,0.75);
     }
 </style>
