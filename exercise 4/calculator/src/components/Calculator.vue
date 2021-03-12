@@ -58,7 +58,7 @@ export default defineComponent ({
     const addNumber =(nr) =>{
       if(display.value.length > 9) return
       if(sign.value === "=")saved.value = ""
-      current.value = current.value + nr
+      current.value += nr
     }
     const setSign =(newSign) =>{
       desimale = false
@@ -140,7 +140,7 @@ export default defineComponent ({
   #log{
     font-size: 50px;
     margin-top: 20px;
-    height: 95%;
+    height: 390px;
     margin: 5px;
     overflow-y: auto;
     text-align: center;
