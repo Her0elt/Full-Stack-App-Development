@@ -56,6 +56,7 @@ export default defineComponent ({
 
 
     const addNumber =(nr) =>{
+      if(display.value.length > 9) return
       if(sign.value === "=")saved.value = ""
       current.value = current.value + nr
     }
@@ -72,8 +73,8 @@ export default defineComponent ({
     }
     const evaluate = () =>{
       const prevSaved = saved.value
-      saved.value = calculate(Number(saved.value), Number(current.value)).toString()
-      if(sign.value !== "=") log.value.unshift(`${prevSaved} ${sign.value} ${current.value} = ${saved.value}`)
+      saved.value = calculate(Number(saved.value), Number(current.value? current.value: saved.value )).toString()
+      if(sign.value !== "=") log.value.unshift(`${prevSaved} ${sign.value} ${current.value? current.value: prevSaved } = ${saved.value}`)
       current.value = ""
       sign.value = ""
 
