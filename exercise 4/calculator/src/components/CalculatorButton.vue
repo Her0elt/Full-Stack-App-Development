@@ -6,7 +6,7 @@
   import {defineComponent} from 'vue';
 export default defineComponent ( {
   name: 'CalculatorButton',
-    props: ['onClick', 'sign'],
+    props: ['sign'],
     setup(props, { emit }){
         const clicked = () =>{
             emit("clicked", props.sign)

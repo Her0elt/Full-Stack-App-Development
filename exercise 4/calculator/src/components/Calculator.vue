@@ -34,7 +34,7 @@
   </div>
 </template>
 
-<script>
+<script>//lang = "ts"
   import {ref, defineComponent, computed} from 'vue';
   import CalculatorButton from './CalculatorButton'
   import Paper from './Paper'
@@ -44,70 +44,75 @@ export default defineComponent ({
     CalculatorButton,
     Paper
   },
+  // data(){ for using this instead of .value of state might be vue2 option api 
+  // 
+  // },
   setup(){
-    const signs = ["+","-","*","/"]
-    const numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
-    const log = ref([])
-    const sign = ref("")
-    const saved = ref("")
-    const current = ref("")
-    const seen = ref(true)
+    // reactive for non primitive values, so lager objects
+    const signs = ["+","-","*","/"];
+    const numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+    const log = ref([]);
+    const sign = ref("");
+    const saved = ref("");
+    const current = ref("");
+    const seen = ref(true);
     let desimale = false;
 
-
     const addNumber =(nr) =>{
-      if(display.value.length > 9) return
-      if(sign.value === "=")saved.value = ""
-      current.value += nr
+      if(display.value.length > 9) return;
+      if(sign.value === "=")saved.value = "";
+      current.value += nr;
     }
-    const setSign =(newSign) =>{
-      desimale = false
-      if(sign.value !== "") evaluate()
-      else saved.value = current.value
-      current.value = ""
-      sign.value = newSign
-      
-    }
-    const del = () => {
-      current.value = current.value.slice(0, current.value.length-1)
-    }
-    const evaluate = () =>{
-      const prevSaved = saved.value
-      saved.value = calculate(Number(saved.value), Number(current.value? current.value: saved.value )).toString()
-      if(sign.value !== "=") log.value.unshift(`${prevSaved} ${sign.value} ${current.value? current.value: prevSaved } = ${saved.value}`)
-      current.value = ""
-      sign.value = ""
 
+    const setSign =(newSign) =>{
+      desimale = false;
+      if(sign.value !== "") evaluate();
+      else saved.value = current.value;
+      current.value = "";
+      sign.value = newSign;
     }
-    const calculate = (nr1, nr2) =>{
-        switch(sign.value){
-          case "+": return nr1 + nr2
-          case "-": return nr1 - nr2
-          case "/": return nr2 !== 0 ? nr1 / nr2 : 0
-          case "*": return nr1 * nr2
-          default: return nr2
+
+    const del = () => {
+      current.value = current.value.slice(0, current.value.length-1);
+    }
+
+    const evaluate = () =>{
+      const prevSaved = saved.value;
+      saved.value = calculate(Number(saved.value), Number(current.value? current.value: saved.value )).toString();
+      if(sign.value !== "=") log.value.unshift(`${prevSaved} ${sign.value} ${current.value? current.value: prevSaved } = ${saved.value}`);
+      current.value = "";
+      sign.value = "";
+    }
+    
+    const calculate = (nr1, nr2) => {
+        switch(sign.value) {
+          case "+": return nr1 + nr2;
+          case "-": return nr1 - nr2;
+          case "/": return nr2 !== 0 ? nr1 / nr2 : 0;
+          case "*": return nr1 * nr2;
+          default: return nr2;
         }
     }
 
     const addDesimale = () =>{
       if(!desimale){
-        current.value += '.'
-        desimale = true
+        current.value += '.';
+        desimale = true;
       }
     }
     const clear = () =>{
-      current.value = ""
-      saved.value = ""
-      sign.value = ""
+      current.value = "";
+      saved.value = "";
+      sign.value = "";
     }
+
     const display = computed(()=>{ return saved.value ? 
         current.value ? 
         current.value : saved.value
         : current.value})
           
-  return{signs, numbers, addNumber, setSign, display, addDesimale, log, clear, saved, current, del, seen}
-    
-  }
+  return{ signs, numbers, addNumber, setSign, display, addDesimale, log, clear, saved, current, del, seen }
+  },
 })
 </script>
 
