@@ -34,6 +34,7 @@
 
 <script lang = "ts">//lang = "ts"
   import {ref, defineComponent, computed} from 'vue';
+  import axios from 'axios';
   import CalculatorButton from '@/components/CalculatorButton.vue'
   import Paper from '@/components/Paper.vue'
 export default defineComponent ({
@@ -62,34 +63,41 @@ export default defineComponent ({
       current.value = `${current.value}${nr}`;
     }
 
-    const setSign =(newSign: String) =>{
+    const setSign = (newSign: String) =>{
       desimale = false;
-      if(sign.value !== "") evaluate();
-      else saved.value = current.value;
-      current.value = "";
-      sign.value = newSign;
+      if(sign.value !== "")evaluate()
+      else {
+        saved.value = current.value
+        current.value = "";
+        sign.value = newSign;
+      }
     }
 
     const del = () => {
       current.value = current.value.slice(0, current.value.length-1);
     }
 
-    const evaluate = () =>{
+    const evaluate =  async () =>{
       const prevSaved = saved.value;
-      saved.value = calculate(Number(saved.value), Number(current.value? current.value: saved.value )).toString();
+      saved.value = (await calculate(Number(saved.value), Number(current.value? current.value: saved.value ), sign.value)).toString();
       if(sign.value !== "=") log.value.unshift(`${prevSaved} ${sign.value} ${current.value? current.value: prevSaved } = ${saved.value}`);
       current.value = "";
       sign.value = "";
     }
     
-    const calculate = (nr1:number, nr2:number) => {
-        switch(sign.value) {
-          case "+": return nr1 + nr2;
-          case "-": return nr1 - nr2;
-          case "/": return nr2 !== 0 ? nr1 / nr2 : 0;
-          case "*": return nr1 * nr2;
-          default: return nr2;
-        }
+    const calculate = async(nr1:number, nr2:number, sign:String): Promise<number> => {
+      return await axios.post('http://localhost:8080/api/calculator/', {
+      nr1: nr1,
+      nr2: nr2,
+      sign:sign
+      })
+      .then((response) => {
+        return response.data.ans
+      })
+      .catch((error) => {
+        console.log(error);
+        return 0;
+      });
     }
 
     const addDesimale = () =>{
