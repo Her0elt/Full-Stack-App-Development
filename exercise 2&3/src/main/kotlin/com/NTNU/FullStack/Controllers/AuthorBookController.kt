@@ -9,7 +9,7 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping("/api/author/{authorName}/book/")
-class AuthorBookController{
+class AuthorBookController {
 
     @Autowired
     lateinit var authorBookService: AuthorBookService
