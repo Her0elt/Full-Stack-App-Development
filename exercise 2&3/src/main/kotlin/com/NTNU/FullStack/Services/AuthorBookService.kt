@@ -8,6 +8,7 @@ import com.NTNU.FullStack.Repositories.BookRepository
 import com.NTNU.FullStack.utils.ErrorResponse
 import com.NTNU.FullStack.utils.SuccessResponse
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
@@ -24,7 +25,7 @@ class AuthorBookService {
     private lateinit var  bookRepository: BookRepository
 
     fun getAuthorBookByName(authorName: String): ResponseEntity<*> {
-        val books = bookRepository.findBooksByNameContains(authorName)
+        val books = bookRepository.findBooksByNameContains(authorName, PageRequest.of(0,1))
         return if (books != null) {
             ResponseEntity.ok(books.map { book -> book.toBookList()  })
         } else {

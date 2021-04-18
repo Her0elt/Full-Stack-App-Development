@@ -16,7 +16,10 @@ class BookController {
     private lateinit var bookService: BookService
 
     @GetMapping
-    fun getAll(@RequestParam name: String?, @RequestParam authorName: String?): ResponseEntity<*> =bookService.getAllBooks(name, authorName)
+    fun getAll(@RequestParam name: String?, @RequestParam authorName: String?,@RequestParam sort: Array<String>?): ResponseEntity<*> {
+        println(sort)
+        return bookService.getAllBooks(name, authorName, sort )
+    }
 
     @GetMapping("{bookName}")
     fun get(@PathVariable bookName: String): ResponseEntity<*> = ResponseEntity.ok(bookService.getBookByName(bookName))

@@ -95,7 +95,7 @@ export default defineComponent ({
         return response.data.ans
       })
       .catch((error) => {
-        console.log(error);
+       alert(error.response.data.message)
         return 0;
       });
     }
