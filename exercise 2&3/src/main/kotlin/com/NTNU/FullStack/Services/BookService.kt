@@ -22,7 +22,7 @@ class BookService {
         var logger: Logger = LoggerFactory.getLogger(AuthorController::class.java)
     }
 
-    fun getAllBooks( name:String?, authorName: String?, sort:Array<String>?): ResponseEntity<*> {
+    fun getAllBooks( name:String?, authorName: String?, sort:Array<String>?, page:Int): ResponseEntity<*> {
         val books: List<Book>?  = when {
             (name != null && authorName != null) -> {
                 logger.info("Search for book by name: $name and author: $authorName")
@@ -41,8 +41,8 @@ class BookService {
             }
         }
 
-        val boooks:Page<Book> = if (sort != null) bookRepository.findAll(PageRequest.of(0,4, Sort.Direction.ASC, *sort))
-        else  bookRepository.findAll(PageRequest.of(0,4, Sort.Direction.ASC, "name"))
+        val boooks:Page<Book> = if (sort != null) bookRepository.findAll(PageRequest.of(page,4, Sort.Direction.ASC, *sort))
+        else  bookRepository.findAll(PageRequest.of(page,4, Sort.Direction.ASC, "name"))
         if (books != null) {
             return ResponseEntity.ok(boooks.map{ book -> book.toBookList()})
         }

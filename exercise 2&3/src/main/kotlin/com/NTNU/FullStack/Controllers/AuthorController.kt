@@ -5,6 +5,8 @@ import com.NTNU.FullStack.Model.*
 import com.NTNU.FullStack.Services.AuthorService
 import com.NTNU.FullStack.utils.ErrorResponse
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -20,7 +22,10 @@ class AuthorController {
     private lateinit var authorService: AuthorService
 
     @GetMapping
-    fun getAll(): List<AuthorList> = authorService.getAllAuthors();
+    fun getAll(pageable:Pageable): Page<AuthorList>{
+        println(pageable.sort)
+        return authorService.getAllAuthors(pageable);
+    }
 
     @GetMapping("/{authorName}")
     fun get(@PathVariable authorName: String): ResponseEntity<*> {
@@ -32,7 +37,7 @@ class AuthorController {
     }
 
     @PostMapping("/")
-    fun create(@Valid @RequestBody newAuthor: Author): ResponseEntity<*> {
+    fun create(@RequestBody newAuthor: Author): ResponseEntity<*> {
         try {
             return ResponseEntity.ok(authorService.createNewAuthor(newAuthor).toAuthorResponse())
         }catch (e: AuthorNotFoundException){

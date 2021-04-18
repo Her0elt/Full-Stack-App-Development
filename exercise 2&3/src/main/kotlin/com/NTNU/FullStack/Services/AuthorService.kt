@@ -5,6 +5,8 @@ import com.NTNU.FullStack.Model.*
 import com.NTNU.FullStack.Repositories.AdressRepository
 import com.NTNU.FullStack.Repositories.AuthorRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.web.bind.annotation.RequestBody
 import javax.validation.Valid
@@ -21,7 +23,7 @@ class AuthorService{
 
 
 
-    fun getAllAuthors(): List<AuthorList> = authorRepository.findAll().map { author -> author.toAuthorList() }
+    fun getAllAuthors(pageable: Pageable): Page<AuthorList> = authorRepository.findAll(pageable).map { author -> author.toAuthorList() }
 
 
     fun getAuthorByName(authorName: String): Author {
@@ -34,8 +36,7 @@ class AuthorService{
     fun createNewAuthor(newAuthor: Author): Author {
         authorRepository.findAuthorByName(newAuthor.name).run {
             if (this != null) return this
-            val adress =  Adress(0, newAuthor.adress.street, newAuthor.adress.postCode, newAuthor.adress.country, null)
-            val author = Author(0, newAuthor.name, newAuthor.age, adress)
+            val author = Author(0, newAuthor.name, newAuthor.age, null)
             authorRepository.saveAndFlush(author)
             return  author
         }

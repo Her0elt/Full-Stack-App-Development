@@ -20,7 +20,7 @@ data class Author(
             @OneToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
             @JoinColumn(name = "adress_id", referencedColumnName = "id")
             @JsonManagedReference
-            var adress: Adress,
+            var adress: Adress?,
             @ManyToMany(fetch = FetchType.LAZY, cascade = [CascadeType.PERSIST, CascadeType.MERGE])
             @JoinTable(
                     name = "author_book",
@@ -40,14 +40,14 @@ fun Author.toAuthorList(): AuthorList {
             this.name,
     )
 }
-data class AuthorResponse(val id: Long, val name: String, val age:Int, val adress: AdressList, val books: List<BookList> )
+data class AuthorResponse(val id: Long, val name: String, val age:Int, val adress: AdressList?, val books: List<BookList> )
 
 fun Author.toAuthorResponse(): AuthorResponse {
     return AuthorResponse(
             this.id,
             this.name,
             this.age,
-            this.adress.toAdressList(),
+            this.adress?.toAdressList(),
             this.books.map { book -> book.toBookList() },
     )
 }
